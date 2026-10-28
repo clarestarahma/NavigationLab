@@ -1,4 +1,4 @@
-package com.example.navigationlab.ui.screens
+package com.example.navigationlab.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text("Home", style = MaterialTheme.typography.headlineMedium)
-        val id = 1034
+        val id = 2026
         Button(onClick = { onOpenDetail(id) }) {
             Text("Buka Detail Mahasiswa $id")
         }

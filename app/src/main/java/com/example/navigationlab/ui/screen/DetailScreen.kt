@@ -1,26 +1,22 @@
-package com.example.navigationlab.ui.screens
+package com.example.navigationlab.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.navigationlab.ui.detail.DetailUiState
 
 @Composable
 fun DetailScreen(
-    studentId: Int,
-    onBack: () -> Unit,
-    onOpenProfile: () -> Unit
+    uiState: DetailUiState,
+    onBack: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -29,19 +25,20 @@ fun DetailScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Detail", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        Text("Student ID: $studentId")
-        Spacer(Modifier.weight(1f))
-        Button(
-            onClick = onOpenProfile,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Buka Profile")
+        Text("Detail Student", style = MaterialTheme.typography.headlineMedium)
+
+        when {
+            uiState.errorMessage != null -> Text(uiState.errorMessage)
+            uiState.student != null -> {
+                val student = uiState.student
+                Text("ID:  ${student.id}")
+                Text("Nama:  ${student.name}")
+                Text("Program:  ${student.program}")
+                Text("Angkatan:  ${student.year}")
+            }
         }
-        OutlinedButton (
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+
+        Button(onClick = onBack) {
             Text("Kembali")
         }
     }

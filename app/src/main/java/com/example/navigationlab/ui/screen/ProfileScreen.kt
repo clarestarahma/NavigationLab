@@ -1,4 +1,4 @@
-package com.example.navigationlab.ui.screens
+package com.example.navigationlab.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
