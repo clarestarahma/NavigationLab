@@ -25,4 +25,13 @@ class DefaultStudentRepository (
             callback(result.map { it.toStudent() })
         }
     }
+
+    override fun searchStudents(
+        query: String,
+        callback: (Result<List<Student>>) -> Unit
+    ) {
+        remoteDataSource.searchStudents(query) { result ->
+            callback(result.map { users -> users.map { it.toStudent() } })
+        }
+    }
 }

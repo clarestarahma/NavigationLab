@@ -2,6 +2,7 @@ package com.example.navigationlab.data.remote
 
 import com.example.navigationlab.data.remote.dto.UserDto
 import com.example.navigationlab.data.remote.dto.UserResponse
+import okhttp3.internal.concurrent.TaskQueue
 import retrofit2.Response
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,6 +45,23 @@ class StudentRemoteDataSource (
             }
 
             override fun onFailure(call: Call<UserDto?>, t: Throwable) {
+                callback(Result.failure(t))
+            }
+        })
+    }
+
+    fun  searchStudents(query: String, callback: (Result<List<UserDto>>) -> Unit ) {
+        api.searchUsers(query).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
+                    callback(Result.success(body.users))
+                } else {
+                    callback(Result.failure(Exception("HTTP ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
                 callback(Result.failure(t))
             }
         })

@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -21,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.navigationlab.data.model.Student
 import com.example.navigationlab.ui.home.HomeUiState
+import retrofit2.http.Query
 
 @Composable
 fun HomeScreen(
@@ -28,7 +33,9 @@ fun HomeScreen(
     onStudentClick: (Int) -> Unit,
     onRetry: () -> Unit,
     onOpenProfile: () -> Unit,
-    onOpenAbout: () -> Unit
+    onOpenAbout: () -> Unit,
+    onSearchQueryChange: (String) -> Unit,
+    onSearch: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -48,6 +55,13 @@ fun HomeScreen(
                 Text("About")
             }
         }
+
+        SearchBar(
+            query = uiState.searchQuery,
+            onSearchQueryChange = onSearchQueryChange,
+            onSearch = onSearch
+        )
+
         when {
             uiState.isLoading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -81,6 +95,33 @@ fun HomeScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SearchBar(
+    query: String,
+    onSearchQueryChange: (String) -> Unit,
+    onSearch: () -> Unit
+){
+    OutlinedTextField(
+        value = query,
+        onValueChange = onSearchQueryChange,
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text("Cari student...") },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search Icon"
+            )
+        },
+        singleLine = true
+    )
+
+    Button(
+        onClick = onSearch
+    ) {
+        Text("Cari")
     }
 }
 

@@ -1,7 +1,9 @@
 package com.example.navigationlab.data.remote
 
+import com.example.navigationlab.data.model.Student
 import com.example.navigationlab.data.remote.dto.UserDto
 import com.example.navigationlab.data.remote.dto.UserResponse
+import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,4 +20,9 @@ interface StudentApiService {
     fun getUser(
         @Path("id") id: Int
     ): Call<UserDto>
+
+    @GET("users/search")
+    fun searchUsers(
+        @Query("q") query: String
+    ): Call<UserResponse>
 }

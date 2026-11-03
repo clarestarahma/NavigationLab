@@ -53,7 +53,9 @@ fun NavigationLabApp(
                 onOpenAbout = {
                     navController.navigate(Routes.ABOUT)
                 },
-                onRetry = homeViewModel::loadStudents
+                onRetry = homeViewModel::loadStudents,
+                onSearch = homeViewModel::searchStudents,
+                onSearchQueryChange = homeViewModel::onSearchQueryChange
             )
         }
 
