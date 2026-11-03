@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModelProvider
 import com.example.navigationlab.data.repository.StudentRepository
+import com.example.navigationlab.ui.home.HomeUiState
 
 class DetailViewModel (
     private val repository: StudentRepository
@@ -14,11 +15,18 @@ class DetailViewModel (
         private set
 
     fun loadStudent(id: Int) {
-        val student = repository.getStudentById(id)
-        uiState = if (student != null) {
-            DetailUiState(student = student)
-        } else {
-            DetailUiState(errorMessage = "Student tidak ditemukan")
+        uiState = uiState.copy(isLoading = true, errorMessage = null)
+
+        repository.getStudent(id) { result ->
+            result
+                .onSuccess { data ->
+                    uiState = DetailUiState(student = data)
+                }
+                .onFailure { error ->
+                    uiState = DetailUiState(
+                        errorMessage = error.message ?: "Gagal mengambil data"
+                    )
+                }
         }
     }
 

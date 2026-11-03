@@ -14,12 +14,18 @@ class HomeViewModel (
         private set
 
     fun loadStudents() {
-        val students = repository.getStudents()
+        uiState = uiState.copy(isLoading = true, errorMessage = null)
 
-        uiState = if (students != null) {
-            HomeUiState(students = students)
-        } else {
-            HomeUiState(errorMessage = "Students tidak ditemukan")
+        repository.getStudents { result ->
+            result
+                .onSuccess { data ->
+                    uiState = HomeUiState(students = data)
+                }
+                .onFailure { error ->
+                    uiState = HomeUiState(
+                        errorMessage = error.message ?: "Gagal mengambil data"
+                    )
+                }
         }
     }
 

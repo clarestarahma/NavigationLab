@@ -10,8 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.navigationlab.Routes
+import com.example.navigationlab.data.remote.RetrofitClient
+import com.example.navigationlab.data.remote.StudentRemoteDataSource
 import com.example.navigationlab.data.repository.DefaultStudentRepository
-import com.example.navigationlab.data.source.StudentLocalDataSource
+//import com.example.navigationlab.data.source.StudentLocalDataSource
 import com.example.navigationlab.ui.detail.DetailViewModel
 import com.example.navigationlab.ui.home.HomeViewModel
 import com.example.navigationlab.ui.screen.AboutScreen
@@ -23,8 +25,8 @@ import com.example.navigationlab.ui.screen.ProfileScreen
 fun NavigationLabApp(
 
 ) {
-    val dataSource = remember { StudentLocalDataSource() }
-    val repository = remember { DefaultStudentRepository(dataSource) }
+    val remoteDataSource = remember { StudentRemoteDataSource(RetrofitClient.apiService) }
+    val repository = remember { DefaultStudentRepository(remoteDataSource) }
     val navController = rememberNavController()
 
     NavHost(
@@ -32,16 +34,16 @@ fun NavigationLabApp(
         startDestination = Routes.HOME
     ) {
         composable(Routes.HOME) {
-            val viewModel: HomeViewModel = viewModel (
+            val homeViewModel: HomeViewModel = viewModel (
                 factory = HomeViewModel.factory(repository)
             )
 
             LaunchedEffect(Unit) {
-                viewModel.loadStudents()
+                homeViewModel.loadStudents()
             }
 
             HomeScreen(
-                uiState = viewModel.uiState,
+                uiState = homeViewModel.uiState,
                 onStudentClick = { id ->
                     navController.navigate(Routes.detail(id))
                 },
@@ -50,7 +52,8 @@ fun NavigationLabApp(
                 },
                 onOpenAbout = {
                     navController.navigate(Routes.ABOUT)
-                }
+                },
+                onRetry = homeViewModel::loadStudents
             )
         }
 
