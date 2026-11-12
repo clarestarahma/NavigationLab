@@ -1,5 +1,6 @@
 package com.example.navigationlab.ui.screen
 
+import android.graphics.Paint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.ModifierLocalModifierNode
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import com.example.navigationlab.data.model.Student
 import com.example.navigationlab.ui.home.HomeUiState
@@ -35,7 +38,8 @@ fun HomeScreen(
     onOpenProfile: () -> Unit,
     onOpenAbout: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
+    onRefresh: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -43,7 +47,14 @@ fun HomeScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Home", style = MaterialTheme.typography.headlineMedium)
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Home", style = MaterialTheme.typography.headlineMedium)
+            RefreshButton(onClick = onRefresh)
+        }
 
         Row (
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -139,7 +150,7 @@ fun StudentCard(
             style = MaterialTheme.typography.titleMedium
         )
         Text (
-            text = "${student.university} Email: ${student.email}",
+            text = "${student.university}",
             style = MaterialTheme.typography.bodyMedium
         )
         Button (
@@ -147,5 +158,15 @@ fun StudentCard(
         ) {
             Text("Buka Detail Mahasiswa ${student.id}")
         }
+    }
+}
+
+@Composable
+fun RefreshButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Button(onClick = onClick) {
+        Text("Refresh")
     }
 }
