@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.navigationlab.data.location.DefaultLocationRepository
 import com.example.navigationlab.navitgation.NavigationLabApp
 import com.example.navigationlab.ui.theme.NavigationLabTheme
+import com.google.android.gms.location.LocationServices
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -37,6 +37,9 @@ fun HomeScreen(
     onRetry: () -> Unit,
     onOpenProfile: () -> Unit,
     onOpenAbout: () -> Unit,
+    onOpenFavorites: () -> Unit,
+    onToggleSort: () -> Unit,
+    onOpenLocation: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
     onRefresh: () -> Unit
@@ -56,14 +59,28 @@ fun HomeScreen(
             RefreshButton(onClick = onRefresh)
         }
 
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedButton(onClick = onOpenProfile) {
-                Text("Profile")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(onClick = onOpenProfile) {
+                    Text("Profile")
+                }
+                OutlinedButton(onClick = onOpenFavorites) {
+                    Text("Favorites")
+                }
+                TextButton(onClick = onOpenAbout) {
+                    Text("About")
+                }
             }
-            TextButton(onClick = onOpenAbout) {
-                Text("About")
+
+            OutlinedButton(onClick = onToggleSort) {
+                Text(if (uiState.sortAscending) "Urut: A-Z" else "Urut: Z-A")
+            }
+            Button(onClick = onOpenLocation) {
+                Text("Buka Lokasi")
             }
         }
 

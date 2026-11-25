@@ -1,6 +1,5 @@
 package com.example.navigationlab.ui.screen
 
-import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +17,7 @@ import com.example.navigationlab.ui.detail.DetailUiState
 @Composable
 fun DetailScreen(
     uiState: DetailUiState,
+    onToggleFavorite: () -> Unit,
     onBack: () -> Unit
 ) {
     Column(
@@ -47,6 +47,17 @@ fun DetailScreen(
                     Text("University: ${data.university}")
                 }
             }
+        }
+
+        Button(
+            onClick = onToggleFavorite
+        ) {
+            Text(
+                if (uiState.isFavorite)
+                    "Hapus dari Favorit"
+                else
+                    "Simpan ke Favorit"
+            )
         }
 
         Button(onClick = onBack) {
